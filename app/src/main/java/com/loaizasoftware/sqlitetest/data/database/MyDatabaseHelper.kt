@@ -63,4 +63,11 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         cursor.close()
         return users
     }
+
+    fun deleteAllUsers(): Boolean {
+        val db = writableDatabase
+        val result = db.delete(TABLE_NAME, null, null)
+        return result != -1
+    }
+
 }

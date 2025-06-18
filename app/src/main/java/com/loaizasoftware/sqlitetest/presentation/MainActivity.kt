@@ -45,15 +45,16 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-
-        3
     }
 
     private infix fun initDB(context: Context) {
 
         dbHelper = MyDatabaseHelper(context)
 
+        dbHelper.deleteAllUsers()
+
         dbHelper.insertUser("Julio", 26)
+        dbHelper.insertUser("Andres", 33)
 
         users = dbHelper.getAllUsers()
 
@@ -71,6 +72,7 @@ fun SQLiteTest(users: List<User>, paddingValues: PaddingValues) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "show_all_users") {
+
         composable("show_all_users") {
             ShowAllScreen(users = users)
         }
