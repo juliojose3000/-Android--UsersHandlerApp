@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.loaizasoftware.sqlitetest"
+    namespace = "com.loaizasoftware.usershandlerapp"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.loaizasoftware.sqlitetest"
+        applicationId = "com.loaizasoftware.usershandlerapp"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
