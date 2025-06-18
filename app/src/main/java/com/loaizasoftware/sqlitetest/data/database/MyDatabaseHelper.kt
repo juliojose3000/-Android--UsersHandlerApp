@@ -52,9 +52,12 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
         val users = mutableListOf<User>()
         if (cursor.moveToFirst()) {
             do {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
                 val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME))
                 val age = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_AGE))
+
                 users.add(createUser {
+                    this.id = id
                     this.name = name
                     this.age = age
                 })
@@ -67,6 +70,12 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
     fun deleteAllUsers(): Boolean {
         val db = writableDatabase
         val result = db.delete(TABLE_NAME, null, null)
+        return result != -1
+    }
+
+    fun deleteUserById(userId: Int): Boolean {
+        val db = writableDatabase
+        val result = db.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(userId.toString()))
         return result != -1
     }
 

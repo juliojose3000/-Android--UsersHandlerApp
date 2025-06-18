@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.loaizasoftware.sqlitetest.domain.model.User
 import com.loaizasoftware.sqlitetest.domain.model.createUser
 import com.loaizasoftware.sqlitetest.domain.usecase.AddUserUseCase
+import com.loaizasoftware.sqlitetest.domain.usecase.DeleteUserByIdUseCase
 import com.loaizasoftware.sqlitetest.domain.usecase.GetAllUsersUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class UserViewModel (
     private val addUserUseCase: AddUserUseCase,
-    private val getAllUsersUseCase: GetAllUsersUseCase
+    private val getAllUsersUseCase: GetAllUsersUseCase,
+    private val deleteUserByIdUseCase: DeleteUserByIdUseCase
 ): ViewModel() {
 
     private val _nameState = MutableStateFlow("")
@@ -58,5 +60,17 @@ class UserViewModel (
         return true
 
     }
+
+
+    fun deleteUserById(userId: Int): Boolean {
+
+        return deleteUserByIdUseCase.run(userId).also {
+
+            listUsers.value = listUsers.value.filter { it.id != userId }
+
+        }
+
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.loaizasoftware.sqlitetest.presentation.ui.screens
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -34,7 +37,11 @@ import com.loaizasoftware.sqlitetest.domain.model.User
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ShowAllScreen(users: List<User>, navHostController: NavHostController) {
+fun AllUsersScreen(
+    users: List<User>,
+    navHostController: NavHostController,
+    deleteUserEvent: (userId: Int) -> Boolean
+) {
 
     Scaffold(
         topBar = {
@@ -64,7 +71,8 @@ fun ShowAllScreen(users: List<User>, navHostController: NavHostController) {
                     .padding(
                         start = 16.dp,
                         end = 16.dp
-                    )
+                    ),
+                deleteUserEvent = deleteUserEvent
 
             )
 
@@ -87,7 +95,9 @@ fun ShowAllScreen(users: List<User>, navHostController: NavHostController) {
 }
 
 @Composable
-fun UsersTable(users: List<User>, modifier: Modifier) {
+fun UsersTable(users: List<User>, modifier: Modifier, deleteUserEvent: (userId: Int) -> Boolean) {
+
+    val context = LocalContext.current
 
     LazyColumn(
         modifier = modifier
@@ -124,6 +134,25 @@ fun UsersTable(users: List<User>, modifier: Modifier) {
                     text = users[index].age.toString(),
                     style = MaterialTheme.typography.titleMedium
                 )
+
+                Spacer(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .fillMaxHeight()
+                        .border(border = BorderStroke(width = 1.dp, color = Color.LightGray))
+                )
+
+                Icon(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .width(35.dp)
+                        .clickable {
+                            deleteUserEvent(users[index].id)
+                        },
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = ""
+                )
+
             }
 
         }
@@ -144,6 +173,8 @@ fun ShowAllScreenPreview() {
                 start = 16.dp,
                 end = 16.dp
             )
+            .background(Color.White),
+        deleteUserEvent = { true }
 
     )
 

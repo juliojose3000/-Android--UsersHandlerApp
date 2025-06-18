@@ -2,4 +2,4 @@ package com.loaizasoftware.sqlitetest.data.dummy
 
 import com.loaizasoftware.sqlitetest.domain.model.User
 
-val users = listOf(User("Julio", 26), User("Edward", 34), User("Arelys", 16))
+val users = listOf(User(1,"Julio", 26), User(2,"Edward", 34), User(3,"Arelys", 16))

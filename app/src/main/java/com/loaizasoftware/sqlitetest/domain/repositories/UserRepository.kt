@@ -8,4 +8,6 @@ interface UserRepository {
 
     fun getAllUsers(): List<User>
 
+    fun deleteUserById(userId: Int): Boolean
+
 }

@@ -1,8 +1,6 @@
 package com.loaizasoftware.sqlitetest.presentation.ui.activities
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -18,12 +16,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.loaizasoftware.sqlitetest.data.database.MyDatabaseHelper
 import com.loaizasoftware.sqlitetest.data.repositories_impl.UserRepositoryImpl
-import com.loaizasoftware.sqlitetest.domain.model.User
 import com.loaizasoftware.sqlitetest.domain.usecase.AddUserUseCase
+import com.loaizasoftware.sqlitetest.domain.usecase.DeleteUserByIdUseCase
 import com.loaizasoftware.sqlitetest.domain.usecase.GetAllUsersUseCase
 import com.loaizasoftware.sqlitetest.presentation.theme.SQLiteTestTheme
 import com.loaizasoftware.sqlitetest.presentation.ui.screens.AddUserScreen
-import com.loaizasoftware.sqlitetest.presentation.ui.screens.ShowAllScreen
+import com.loaizasoftware.sqlitetest.presentation.ui.screens.AllUsersScreen
 import com.loaizasoftware.sqlitetest.presentation.viewmodels.UserViewModel
 
 class MainActivity : ComponentActivity() {
@@ -40,10 +38,12 @@ class MainActivity : ComponentActivity() {
 
         val useCase = AddUserUseCase(repository = UserRepositoryImpl(dbHelper))
         val getAllUsersUseCase = GetAllUsersUseCase(repository = UserRepositoryImpl(dbHelper))
+        val deleteUserByIdUseCase = DeleteUserByIdUseCase(repository = UserRepositoryImpl(dbHelper))
 
         viewModel = UserViewModel(
             addUserUseCase = useCase,
-            getAllUsersUseCase = getAllUsersUseCase
+            getAllUsersUseCase = getAllUsersUseCase,
+            deleteUserByIdUseCase = deleteUserByIdUseCase
         )
 
         enableEdgeToEdge()
@@ -77,9 +77,10 @@ fun SQLiteTest(
             //val users = viewModel.listUsers.value
             val users = viewModel.listUsers.collectAsState().value
 
-            ShowAllScreen(
+            AllUsersScreen(
                 users = users,
-                navHostController = navController
+                navHostController = navController,
+                deleteUserEvent = viewModel::deleteUserById
             )
         }
 

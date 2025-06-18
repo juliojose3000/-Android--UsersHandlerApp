@@ -14,4 +14,8 @@ class UserRepositoryImpl(private val dbHelper: MyDatabaseHelper): UserRepository
         return dbHelper.getAllUsers()
     }
 
+    override fun deleteUserById(userId: Int): Boolean {
+        return dbHelper.deleteUserById(userId)
+    }
+
 }

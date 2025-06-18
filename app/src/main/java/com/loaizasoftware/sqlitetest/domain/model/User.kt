@@ -1,12 +1,13 @@
 package com.loaizasoftware.sqlitetest.domain.model
 
-data class User(val name: String, val age: Int) {
+data class User(val id: Int, val name: String, val age: Int) {
 
     class Builder {
+        var id: Int = 0
         var name: String = ""
         var age: Int = 0
 
-        fun build() = User(name, age)
+        fun build() = User(id = id, name = name, age = age)
 
     }
 
