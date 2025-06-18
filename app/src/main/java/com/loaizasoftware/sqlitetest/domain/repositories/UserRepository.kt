@@ -6,4 +6,6 @@ interface UserRepository {
 
     fun addUser(user: User): Boolean
 
+    fun getAllUsers(): List<User>
+
 }

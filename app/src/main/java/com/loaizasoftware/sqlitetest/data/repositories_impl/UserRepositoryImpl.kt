@@ -10,4 +10,8 @@ class UserRepositoryImpl(private val dbHelper: MyDatabaseHelper): UserRepository
         return dbHelper.insertUser(user.name, user.age)
     }
 
+    override fun getAllUsers(): List<User> {
+        return dbHelper.getAllUsers()
+    }
+
 }

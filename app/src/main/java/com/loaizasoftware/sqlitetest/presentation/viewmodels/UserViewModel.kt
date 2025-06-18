@@ -1,14 +1,19 @@
 package com.loaizasoftware.sqlitetest.presentation.viewmodels
 
+import androidx.annotation.Nullable
 import androidx.lifecycle.ViewModel
 import com.loaizasoftware.sqlitetest.domain.model.User
 import com.loaizasoftware.sqlitetest.domain.model.createUser
-import com.loaizasoftware.sqlitetest.domain.repositories.UserRepository
+import com.loaizasoftware.sqlitetest.domain.usecase.AddUserUseCase
+import com.loaizasoftware.sqlitetest.domain.usecase.GetAllUsersUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class UserViewModel (private val repository: UserRepository): ViewModel() {
+class UserViewModel (
+    private val addUserUseCase: AddUserUseCase,
+    private val getAllUsersUseCase: GetAllUsersUseCase
+): ViewModel() {
 
     private val _nameState = MutableStateFlow("")
     val nameState: StateFlow<String> = _nameState.asStateFlow()
@@ -26,6 +31,16 @@ class UserViewModel (private val repository: UserRepository): ViewModel() {
         _ageState.value = age
     }
 
+    init {
+        getAllUsers()
+    }
+
+    private fun getAllUsers() {
+
+        listUsers.value = getAllUsersUseCase.run(Nullable())
+
+    }
+
     fun addUser(): Boolean {
 
         val user = createUser {
@@ -36,9 +51,11 @@ class UserViewModel (private val repository: UserRepository): ViewModel() {
         setName("")
         setAge(0)
 
-        return repository.addUser(user).apply {
-            listUsers.value += user
-        }
+        addUserUseCase
+            .run(user)
+            .also { if (it) { listUsers.value += user } }
+
+        return true
 
     }
 

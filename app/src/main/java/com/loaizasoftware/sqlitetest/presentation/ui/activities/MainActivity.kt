@@ -19,6 +19,8 @@ import androidx.navigation.compose.rememberNavController
 import com.loaizasoftware.sqlitetest.data.database.MyDatabaseHelper
 import com.loaizasoftware.sqlitetest.data.repositories_impl.UserRepositoryImpl
 import com.loaizasoftware.sqlitetest.domain.model.User
+import com.loaizasoftware.sqlitetest.domain.usecase.AddUserUseCase
+import com.loaizasoftware.sqlitetest.domain.usecase.GetAllUsersUseCase
 import com.loaizasoftware.sqlitetest.presentation.theme.SQLiteTestTheme
 import com.loaizasoftware.sqlitetest.presentation.ui.screens.AddUserScreen
 import com.loaizasoftware.sqlitetest.presentation.ui.screens.ShowAllScreen
@@ -28,17 +30,21 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var dbHelper: MyDatabaseHelper
 
-    private lateinit var users: List<User>
-
     private lateinit var viewModel: UserViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initDB(context = this)
+        dbHelper = MyDatabaseHelper(this)
 
-        viewModel = UserViewModel(repository = UserRepositoryImpl(dbHelper))
+        val useCase = AddUserUseCase(repository = UserRepositoryImpl(dbHelper))
+        val getAllUsersUseCase = GetAllUsersUseCase(repository = UserRepositoryImpl(dbHelper))
+
+        viewModel = UserViewModel(
+            addUserUseCase = useCase,
+            getAllUsersUseCase = getAllUsersUseCase
+        )
 
         enableEdgeToEdge()
         setContent {
@@ -51,23 +57,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-    }
-
-    private infix fun initDB(context: Context) {
-
-        dbHelper = MyDatabaseHelper(context)
-
-        /*dbHelper.deleteAllUsers()
-
-        dbHelper.insertUser("Julio", 26)
-        dbHelper.insertUser("Andres", 33)
-
-        users = dbHelper.getAllUsers()
-
-        for (user in users) {
-            Log.v("MyTAG", "Name: ${user.name}, Age: ${user.age}")
-        }*/
 
     }
 
