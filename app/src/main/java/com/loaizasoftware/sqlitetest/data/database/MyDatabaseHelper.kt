@@ -4,8 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.loaizasoftware.sqlitetest.domain.User
-import com.loaizasoftware.sqlitetest.domain.createUser
+import com.loaizasoftware.sqlitetest.domain.model.User
+import com.loaizasoftware.sqlitetest.domain.model.createUser
 
 
 class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(

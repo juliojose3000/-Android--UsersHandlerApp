@@ -1,4 +1,4 @@
-package com.loaizasoftware.sqlitetest.domain
+package com.loaizasoftware.sqlitetest.domain.model
 
 data class User(val name: String, val age: Int) {
 
