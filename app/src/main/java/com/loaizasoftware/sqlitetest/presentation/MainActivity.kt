@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.loaizasoftware.sqlitetest.data.database.MyDatabaseHelper
 import com.loaizasoftware.sqlitetest.domain.User
 import com.loaizasoftware.sqlitetest.presentation.theme.SQLiteTestTheme
+import com.loaizasoftware.sqlitetest.presentation.ui.screens.AddUserScreen
 import com.loaizasoftware.sqlitetest.presentation.ui.screens.ShowAllScreen
 
 class MainActivity : ComponentActivity() {
@@ -74,20 +75,21 @@ fun SQLiteTest(users: List<User>, paddingValues: PaddingValues) {
     NavHost(navController = navController, startDestination = "show_all_users") {
 
         composable("show_all_users") {
-            ShowAllScreen(users = users)
+            ShowAllScreen(
+                users = users,
+                navHostController = navController
+            )
         }
-    }
 
-}
 
-@Composable
-fun HomeScreen(paddingValues: PaddingValues) {
-
-    Column(modifier = Modifier.padding(paddingValues)) {
+        composable("add_user") {
+            AddUserScreen(navHostController = navController)
+        }
 
     }
 
 }
+
 
 
 
