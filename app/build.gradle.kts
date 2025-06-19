@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    //id 'com.google.devtools.ksp' // Doesn't work because is Groovy syntax, we need to use Kotlin DSL:
+    alias(libs.plugins.ksp) // ✅ Use alias for KSP if declared in versions.toml
+
 }
 
 android {
@@ -50,7 +53,15 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+    //Compose Navigation
     implementation("androidx.navigation:navigation-compose:2.9.0")
+
+    //Room
+    //val room_version = "2.6.1" // Use the latest stable version
+    implementation("androidx.room:room-runtime:2.7.2")
+    annotationProcessor("androidx.room:room-compiler:2.7.2") // For Java
+    ksp("androidx.room:room-compiler:2.7.2") // For Kotlin
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

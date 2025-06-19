@@ -14,10 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.loaizasoftware.usershandlerapp.data.database.MyDatabaseHelper
+import com.loaizasoftware.usershandlerapp.data.local.database.AppDatabase
+import com.loaizasoftware.usershandlerapp.data.local.database.MyDatabaseHelper
 import com.loaizasoftware.usershandlerapp.data.repositories_impl.UserRepositoryImpl
 import com.loaizasoftware.usershandlerapp.domain.usecase.AddUserUseCase
-import com.loaizasoftware.usershandlerapp.domain.usecase.DeleteUserByIdUseCase
+import com.loaizasoftware.usershandlerapp.domain.usecase.DeleteUserUseCase
 import com.loaizasoftware.usershandlerapp.domain.usecase.GetAllUsersUseCase
 import com.loaizasoftware.usershandlerapp.presentation.theme.usershandlerappTheme
 import com.loaizasoftware.usershandlerapp.presentation.ui.screens.AddUserScreen
@@ -34,16 +35,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        dbHelper = MyDatabaseHelper(this)
+        //dbHelper = MyDatabaseHelper(this)
+        val userDao = AppDatabase.getDatabase(this).userDao()
 
-        val useCase = AddUserUseCase(repository = UserRepositoryImpl(dbHelper))
-        val getAllUsersUseCase = GetAllUsersUseCase(repository = UserRepositoryImpl(dbHelper))
-        val deleteUserByIdUseCase = DeleteUserByIdUseCase(repository = UserRepositoryImpl(dbHelper))
+        val useCase = AddUserUseCase(repository = UserRepositoryImpl(userDao))
+        val getAllUsersUseCase = GetAllUsersUseCase(repository = UserRepositoryImpl(userDao))
+        val deleteUserUseCase = DeleteUserUseCase(repository = UserRepositoryImpl(userDao))
 
         viewModel = UserViewModel(
             addUserUseCase = useCase,
             getAllUsersUseCase = getAllUsersUseCase,
-            deleteUserByIdUseCase = deleteUserByIdUseCase
+            deleteUserUseCase = deleteUserUseCase
         )
 
         enableEdgeToEdge()

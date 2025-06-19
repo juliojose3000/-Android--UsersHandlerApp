@@ -1,13 +1,14 @@
 package com.loaizasoftware.usershandlerapp.domain.repositories
 
 import com.loaizasoftware.usershandlerapp.domain.model.User
+import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
-    fun addUser(user: User): Boolean
+    suspend fun addUser(user: User)
 
-    fun getAllUsers(): List<User>
+    suspend fun getAllUsers(): Flow<List<User>>
 
-    fun deleteUserById(userId: Int): Boolean
+    suspend fun deleteUser(user: User)
 
 }

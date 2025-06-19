@@ -40,7 +40,7 @@ import com.loaizasoftware.usershandlerapp.domain.model.User
 fun AllUsersScreen(
     users: List<User>,
     navHostController: NavHostController,
-    deleteUserEvent: (userId: Int) -> Boolean
+    deleteUserEvent: (userId: Int) -> Unit
 ) {
 
     Scaffold(
@@ -95,7 +95,7 @@ fun AllUsersScreen(
 }
 
 @Composable
-fun UsersTable(users: List<User>, modifier: Modifier, deleteUserEvent: (userId: Int) -> Boolean) {
+fun UsersTable(users: List<User>, modifier: Modifier, deleteUserEvent: (userId: Int) -> Unit) {
 
     val context = LocalContext.current
 
@@ -116,7 +116,7 @@ fun UsersTable(users: List<User>, modifier: Modifier, deleteUserEvent: (userId: 
                     modifier = Modifier
                         .weight(1f)
                         .padding(16.dp),
-                    text = users[index].name,
+                    text = users[index].name ?: "",
                     style = MaterialTheme.typography.titleLarge
                 )
 
@@ -147,7 +147,7 @@ fun UsersTable(users: List<User>, modifier: Modifier, deleteUserEvent: (userId: 
                         .padding(16.dp)
                         .width(35.dp)
                         .clickable {
-                            deleteUserEvent(users[index].id)
+                            deleteUserEvent(users[index].id ?: -1)
                         },
                     imageVector = Icons.Default.Delete,
                     contentDescription = ""

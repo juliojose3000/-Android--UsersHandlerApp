@@ -1,6 +1,18 @@
 package com.loaizasoftware.usershandlerapp.domain.model
 
-data class User(val id: Int, val name: String, val age: Int) {
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "users")
+data class User(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int?,
+    @ColumnInfo(name = "name")
+    val name: String?,
+    @ColumnInfo(name = "age") // If column name matches field name, @ColumnInfo is optional
+    val age: Int?
+) {
 
     class Builder {
         var id: Int = 0

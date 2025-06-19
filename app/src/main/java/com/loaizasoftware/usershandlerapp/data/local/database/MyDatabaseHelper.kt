@@ -1,4 +1,4 @@
-package com.loaizasoftware.usershandlerapp.data.database
+package com.loaizasoftware.usershandlerapp.data.local.database
 
 import android.content.ContentValues
 import android.content.Context
@@ -13,7 +13,7 @@ class MyDatabaseHelper(context: Context) : SQLiteOpenHelper(
 ) {
     companion object {
         private const val DATABASE_NAME = "my_database.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 1 //Increment the version when you make changes to the database, like adding a new column.
         private const val TABLE_NAME = "users"
         private const val COLUMN_ID = "id"
         private const val COLUMN_NAME = "name"
