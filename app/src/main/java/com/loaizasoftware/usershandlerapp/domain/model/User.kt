@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "users")
 data class User(
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
+    val id: Int? = null,
     @ColumnInfo(name = "name")
     val name: String?,
     @ColumnInfo(name = "age") // If column name matches field name, @ColumnInfo is optional
@@ -15,7 +15,7 @@ data class User(
 ) {
 
     class Builder {
-        var id: Int = 0
+        var id: Int? = null
         var name: String = ""
         var age: Int = 0
 
