@@ -3,8 +3,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     //id 'com.google.devtools.ksp' // Doesn't work because is Groovy syntax, we need to use Kotlin DSL:
-    alias(libs.plugins.ksp) // ✅ Use alias for KSP if declared in versions.toml
+    //alias(libs.plugins.ksp) // ✅ Use alias for KSP if declared in versions.toml
 
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android") //To use the Kotlin Compiler Plugin
 }
 
 android {
@@ -62,6 +64,9 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.7.2") // For Java
     ksp("androidx.room:room-compiler:2.7.2") // For Kotlin
 
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.56.2")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

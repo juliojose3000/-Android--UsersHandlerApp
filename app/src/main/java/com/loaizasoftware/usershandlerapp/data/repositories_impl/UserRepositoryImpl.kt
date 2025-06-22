@@ -5,8 +5,9 @@ import com.loaizasoftware.usershandlerapp.data.local.database.MyDatabaseHelper
 import com.loaizasoftware.usershandlerapp.domain.model.User
 import com.loaizasoftware.usershandlerapp.domain.repositories.UserRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class UserRepositoryImpl(
+class UserRepositoryImpl @Inject constructor(
     //private val dbHelper: MyDatabaseHelper
     private val userDao: UserDao
 ): UserRepository {

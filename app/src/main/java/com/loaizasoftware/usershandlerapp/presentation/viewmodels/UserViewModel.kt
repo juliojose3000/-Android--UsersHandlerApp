@@ -8,6 +8,7 @@ import com.loaizasoftware.usershandlerapp.domain.model.createUser
 import com.loaizasoftware.usershandlerapp.domain.usecase.AddUserUseCase
 import com.loaizasoftware.usershandlerapp.domain.usecase.DeleteUserUseCase
 import com.loaizasoftware.usershandlerapp.domain.usecase.GetAllUsersUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,8 +16,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel (
+@HiltViewModel //It tells Hilt that the ViewModel can receive dependency injection.
+class UserViewModel @Inject constructor(
     private val addUserUseCase: AddUserUseCase,
     private val getAllUsersUseCase: GetAllUsersUseCase,
     private val deleteUserUseCase: DeleteUserUseCase
