@@ -27,4 +27,8 @@ class UserRepositoryImpl @Inject constructor(
         return userDao.deleteUser(user)
     }
 
+    override suspend fun getAllUnsyncedUsers(): Flow<List<User>> {
+        return userDao.getUnsyncedUsers()
+    }
+
 }

@@ -29,9 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.loaizasoftware.usershandlerapp.R
 import com.loaizasoftware.usershandlerapp.data.dummy.users
 import com.loaizasoftware.usershandlerapp.domain.model.User
 
@@ -150,6 +152,27 @@ fun UsersTable(users: List<User>, modifier: Modifier, deleteUserEvent: (userId: 
                             deleteUserEvent(users[index].id ?: -1)
                         },
                     imageVector = Icons.Default.Delete,
+                    contentDescription = ""
+                )
+
+                Spacer(
+                    modifier = Modifier
+                        .width(1.dp)
+                        .fillMaxHeight()
+                        .border(border = BorderStroke(width = 1.dp, color = Color.LightGray))
+                )
+
+                val syncIconRes =
+                    if(users[index].isSynced)
+                        R.drawable.cloud_24px
+                else
+                    R.drawable.backup_24px
+
+                Icon(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .width(35.dp),
+                    painter = painterResource(id = syncIconRes),
                     contentDescription = ""
                 )
 

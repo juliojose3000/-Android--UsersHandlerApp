@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.loaizasoftware.usershandlerapp.data.local.dao.UserDao
+import com.loaizasoftware.usershandlerapp.data.local.database.migrations.MIGRATION_1_2
 import com.loaizasoftware.usershandlerapp.domain.model.User
 
-@Database(entities = [User::class], version = 1) //Crucially, set the version to your current
+@Database(entities = [User::class], version = 2) //Crucially, set the version to your current
 // SQLiteOpenHelper schema version. This is vital for Room to correctly handle the existing database.
 abstract class AppDatabase: RoomDatabase() {
 
@@ -25,7 +26,7 @@ abstract class AppDatabase: RoomDatabase() {
                     AppDatabase::class.java,
                     "my_database.db" // <<< MUST MATCH YOUR EXISTING DB NAME USED WITH SQLite
                 )
-                    // .addMigrations(MIGRATION_1_2, MIGRATION_2_3) // Add future migrations here
+                    .addMigrations(MIGRATION_1_2) // Add future migrations here
                     // .fallbackToDestructiveMigration() // NOT for initial migration from SQLite
                 .build()
                 INSTANCE = instance

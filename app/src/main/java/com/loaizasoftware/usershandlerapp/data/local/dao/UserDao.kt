@@ -14,6 +14,9 @@ interface UserDao {
     @Query("SELECT * FROM users")
     fun getAllUsers(): Flow<List<User>>
 
+    @Query("SELECT * FROM users WHERE isSynced = 'false'")
+    fun getUnsyncedUsers(): Flow<List<User>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE) // Define conflict strategy
     suspend fun insertUser(user: User): Long // Returns new rowId
 

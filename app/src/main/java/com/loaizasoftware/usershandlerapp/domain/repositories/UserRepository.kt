@@ -11,4 +11,6 @@ interface UserRepository {
 
     suspend fun deleteUser(user: User)
 
+    suspend fun getAllUnsyncedUsers(): Flow<List<User>>
+
 }

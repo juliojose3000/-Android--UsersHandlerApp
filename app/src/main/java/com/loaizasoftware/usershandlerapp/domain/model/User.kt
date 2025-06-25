@@ -11,7 +11,9 @@ data class User(
     @ColumnInfo(name = "name")
     val name: String?,
     @ColumnInfo(name = "age") // If column name matches field name, @ColumnInfo is optional
-    val age: Int?
+    val age: Int?,
+    @ColumnInfo(name = "isSynced")
+    val isSynced: Boolean = false
 ) {
 
     class Builder {
