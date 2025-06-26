@@ -88,7 +88,7 @@ class UserViewModel @Inject constructor(
 
             requireNotNull(user)
 
-            deleteUserUseCase.run(user).also {
+            deleteUserUseCase.run(user.id!!).also {
 
                 listUsers.value = listUsers.value.filter { it.id != userId }
 

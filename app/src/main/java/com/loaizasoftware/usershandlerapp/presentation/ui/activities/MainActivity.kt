@@ -1,5 +1,6 @@
 package com.loaizasoftware.usershandlerapp.presentation.ui.activities
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,12 +16,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.loaizasoftware.usershandlerapp.data.local.database.AppDatabase
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.loaizasoftware.usershandlerapp.presentation.theme.usershandlerappTheme
 import com.loaizasoftware.usershandlerapp.presentation.ui.screens.AddUserScreen
 import com.loaizasoftware.usershandlerapp.presentation.ui.screens.AllUsersScreen
 import com.loaizasoftware.usershandlerapp.presentation.viewmodels.UserViewModel
+import com.loaizasoftware.usershandlerapp.utils.workers.SyncWorker
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint //Indicates Hilt that this class will require dependencies
 class MainActivity : ComponentActivity() {
@@ -29,6 +36,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        initWorker()
 
         enableEdgeToEdge()
         setContent {
@@ -41,6 +50,24 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+    }
+
+    private fun initWorker() {
+
+        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(15, TimeUnit.MINUTES) // ✅ Must be at least 15 minutes
+            .setConstraints(
+                Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build()
+            )
+            .build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "SyncWorker",
+            ExistingPeriodicWorkPolicy.KEEP, // Avoids scheduling duplicate workers
+            syncRequest
+        )
 
     }
 

@@ -20,6 +20,7 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getAllUsers(): Flow<List<User>> {
         //return dbHelper.getAllUsers()
         return userDao.getAllUsers()
+        //return userDao.getUnsyncedUsers()
     }
 
     override suspend fun deleteUser(user: User) {
@@ -29,6 +30,14 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getAllUnsyncedUsers(): Flow<List<User>> {
         return userDao.getUnsyncedUsers()
+    }
+
+    override suspend fun markUserAsSynced(userId: Int) {
+        userDao.markUserAsSynced(userId)
+    }
+
+    override suspend fun setUserToDelete(userId: Int) {
+        userDao.setUserToDelete(userId)
     }
 
 }

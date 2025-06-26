@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "946070967107",
+    "project_id": "users-handler-app",
+    "storage_bucket": "users-handler-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946070967107:android:d8d31224af742bd813d5f6",
+        "android_client_info": {
+          "package_name": "com.loaizasoftware.usershandlerapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL0tGd-1_JG2zsXHbSbsagZ6Ngj95NEx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
