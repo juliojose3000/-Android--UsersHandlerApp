@@ -1,7 +1,7 @@
 package com.loaizasoftware.usershandlerapp.presentation.ui.activities
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,18 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import com.google.android.gms.common.GoogleApiAvailability
 import com.loaizasoftware.usershandlerapp.presentation.theme.usershandlerappTheme
 import com.loaizasoftware.usershandlerapp.presentation.ui.screens.AddUserScreen
 import com.loaizasoftware.usershandlerapp.presentation.ui.screens.AllUsersScreen
 import com.loaizasoftware.usershandlerapp.presentation.viewmodels.UserViewModel
-import com.loaizasoftware.usershandlerapp.utils.workers.SyncWorker
+import com.loaizasoftware.usershandlerapp.utils.workers.SyncUtils
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint //Indicates Hilt that this class will require dependencies
 class MainActivity : ComponentActivity() {
@@ -49,6 +44,11 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        SyncUtils.setupFirestoreRealTimeUpdates(this)
     }
 
 }

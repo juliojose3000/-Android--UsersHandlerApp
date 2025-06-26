@@ -163,7 +163,7 @@ fun UsersTable(users: List<User>, modifier: Modifier, deleteUserEvent: (userId: 
                 )
 
                 val syncIconRes =
-                    if(users[index].isSynced)
+                    if(users[index].synced)
                         R.drawable.cloud_24px
                 else
                     R.drawable.backup_24px

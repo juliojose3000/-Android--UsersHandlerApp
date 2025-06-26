@@ -48,4 +48,8 @@ interface UserDao {
     @Query("UPDATE users SET isSynced = 0, syncAction = 2 WHERE id = :id")
     suspend fun setUserToDelete(id: Int)
 
+    @Query("SELECT EXISTS(SELECT 1 FROM users WHERE id = :id)")
+    suspend fun existsUser(id: Int): Boolean
+
+
 }

@@ -9,11 +9,11 @@ data class User(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     @ColumnInfo(name = "name")
-    val name: String?,
+    val name: String? = "",
     @ColumnInfo(name = "age") // If column name matches field name, @ColumnInfo is optional
-    val age: Int?,
+    val age: Int? = 0,
     @ColumnInfo(name = "isSynced")
-    val isSynced: Boolean = false, //When a new user is created, the isSynced property will be false because we need to indicate that this is a new user and it should be added to the remote db
+    val synced: Boolean = false, //When a new user is created, the isSynced property will be false because we need to indicate that this is a new user and it should be added to the remote db
     @ColumnInfo(name = "syncAction")
     val syncAction: Int = SyncActionEnum.ADD.value //By default, when a new users is created, we set the sync action as [SyncActionEnum.ADD] to eventually add it to the remote database
 ) {
@@ -29,7 +29,7 @@ data class User(
             id = id,
             name = name,
             age = age,
-            isSynced = isSynced,
+            synced = isSynced,
             syncAction = syncAction
         )
 
