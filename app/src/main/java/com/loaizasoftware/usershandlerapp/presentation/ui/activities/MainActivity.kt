@@ -37,13 +37,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initWorker()
-
         enableEdgeToEdge()
         setContent {
             usershandlerappTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    usershandlerapp(
+                    Navigation(
                         paddingValues = innerPadding,
                         viewModel = viewModel
                     )
@@ -53,28 +51,10 @@ class MainActivity : ComponentActivity() {
 
     }
 
-    private fun initWorker() {
-
-        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(15, TimeUnit.MINUTES) // ✅ Must be at least 15 minutes
-            .setConstraints(
-                Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build()
-            )
-            .build()
-
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "SyncWorker",
-            ExistingPeriodicWorkPolicy.KEEP, // Avoids scheduling duplicate workers
-            syncRequest
-        )
-
-    }
-
 }
 
 @Composable
-fun usershandlerapp(
+fun Navigation(
     paddingValues: PaddingValues,
     viewModel: UserViewModel
 ) {
