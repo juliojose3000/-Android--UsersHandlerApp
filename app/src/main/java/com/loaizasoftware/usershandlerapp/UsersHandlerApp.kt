@@ -1,6 +1,7 @@
 package com.loaizasoftware.usershandlerapp
 
 import android.app.Application
+import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
@@ -11,7 +12,7 @@ import dagger.hilt.android.HiltAndroidApp
 import java.util.concurrent.TimeUnit
 
 @HiltAndroidApp //Initializes hilt
-class UsersHandlerApp: Application() {
+class UsersHandlerApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -39,19 +40,32 @@ class UsersHandlerApp: Application() {
      */
     private fun initWorker() {
 
-        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(15, TimeUnit.MINUTES) // ✅ Must be at least 15 minutes
+        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(
+            15,
+            TimeUnit.MINUTES
+        ) // ✅ Must be at least 15 minutes
             .setConstraints(
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
                     .build()
             )
+            //Adding a backoff policy to prevent rapid retry loops.
+            .setBackoffCriteria(
+                BackoffPolicy.EXPONENTIAL,
+                30, TimeUnit.SECONDS
+            )
+            //Adding a .addTag("SyncWorkerTag") allows to monitor, cancel, or observe the worker later if needed.
+            .addTag("SyncWorkerTag")
             .build()
 
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "SyncWorker",
-            ExistingPeriodicWorkPolicy.KEEP, // Avoids scheduling duplicate workers
-            syncRequest
-        )
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                "SyncWorker",
+                ExistingPeriodicWorkPolicy.KEEP, // Avoids scheduling duplicate workers
+                syncRequest
+            )
+
+
 
     }
 

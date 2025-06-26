@@ -1,5 +1,6 @@
 package com.loaizasoftware.usershandlerapp.presentation.viewmodels
 
+import android.app.Application
 import androidx.annotation.Nullable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import com.loaizasoftware.usershandlerapp.domain.model.createUser
 import com.loaizasoftware.usershandlerapp.domain.usecase.AddUserUseCase
 import com.loaizasoftware.usershandlerapp.domain.usecase.DeleteUserUseCase
 import com.loaizasoftware.usershandlerapp.domain.usecase.GetAllUsersUseCase
+import com.loaizasoftware.usershandlerapp.utils.workers.SyncUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel //It tells Hilt that the ViewModel can receive dependency injection.
 class UserViewModel @Inject constructor(
+    private val application: Application,
     private val addUserUseCase: AddUserUseCase,
     private val getAllUsersUseCase: GetAllUsersUseCase,
     private val deleteUserUseCase: DeleteUserUseCase
@@ -46,8 +49,6 @@ class UserViewModel @Inject constructor(
 
     private fun getAllUsers() {
 
-        //listUsers.value =
-
         CoroutineScope(Dispatchers.IO).launch {
 
             getAllUsersUseCase.run(Nullable())
@@ -73,7 +74,10 @@ class UserViewModel @Inject constructor(
 
             addUserUseCase
                 .run(user)
-                .also { listUsers.value += user }
+                .also {
+                    listUsers.value += user
+                    SyncUtils.triggerImmediateSync(application)
+                }
 
         }
 
@@ -91,6 +95,7 @@ class UserViewModel @Inject constructor(
             deleteUserUseCase.run(user.id!!).also {
 
                 listUsers.value = listUsers.value.filter { it.id != userId }
+                SyncUtils.triggerImmediateSync(application)
 
             }
 
